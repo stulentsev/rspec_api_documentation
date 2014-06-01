@@ -15,12 +15,8 @@ module RspecApiDocumentation
     end
 
     def headers_to_env(headers)
-      headers.inject({}) do |hsh, (k, v)|
-        new_key = k.upcase.gsub("-", "_")
-        new_key = "HTTP_#{new_key}" unless new_key == "CONTENT_TYPE"
-        hsh[new_key] = v
-        hsh
-      end
+      headers # above conversion doesn't play well when target host is a rails app
+              # instead of HTTP_FOO, one gets HTTP_HTTP_FOO
     end
 
     def format_headers(headers)
