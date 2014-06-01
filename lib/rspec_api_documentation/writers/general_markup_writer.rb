@@ -1,3 +1,4 @@
+# encoding: utf-8
 module RspecApiDocumentation
   module Writers
     # Base class for writers that write HTML
@@ -15,7 +16,9 @@ module RspecApiDocumentation
           FileUtils.mkdir_p(configuration.docs_dir.join(markup_example.dirname))
 
           File.open(configuration.docs_dir.join(markup_example.dirname, markup_example.filename), "w+") do |f|
-            f.write markup_example.render
+            result = markup_example.render
+            result.force_encoding(Encoding::UTF_8)
+            f.write result
           end
         end
       end
