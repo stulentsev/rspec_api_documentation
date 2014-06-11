@@ -12,27 +12,27 @@ module RspecApiDocumentation
     end
 
     def post
-      "curl \"#{url}\" #{post_data} -X POST #{headers}"
+      "curl \"#{url}\" #{post_data} -X POST #{curl_options(method)} #{headers}"
     end
 
     def get
-      "curl \"#{url}#{get_data}\" -X GET #{headers}"
+      "curl \"#{url}#{get_data}\" -X GET #{curl_options(method)} #{headers}"
     end
 
     def head
-      "curl \"#{url}#{get_data}\" -X HEAD #{headers}"
+      "curl \"#{url}#{get_data}\" -X HEAD #{curl_options(method)} #{headers}"
     end
 
     def put
-      "curl \"#{url}\" #{post_data} -X PUT #{headers}"
+      "curl \"#{url}\" #{post_data} -X PUT #{curl_options(method)} #{headers}"
     end
 
     def delete
-      "curl \"#{url}\" #{post_data} -X DELETE #{headers}"
+      "curl \"#{url}\" #{post_data} -X DELETE #{curl_options(method)} #{headers}"
     end
 
     def patch
-      "curl \"#{url}\" #{post_data} -X PATCH #{headers}"
+      "curl \"#{url}\" #{post_data} -X PATCH #{curl_options(method)} #{headers}"
     end
 
     def url
@@ -56,6 +56,14 @@ module RspecApiDocumentation
     def post_data
       escaped_data = data.to_s.gsub("'", "\\u0027")
       "-d '#{escaped_data}'"
+    end
+
+    def curl_options(method)
+      if method.downcase == 'get'
+        '--globoff' # don't complain about brackets in a query string
+      else
+        ''
+      end
     end
 
     private
